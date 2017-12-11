@@ -1,0 +1,186 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[reqno,12pt]{amsart}
+\usepackage[foot]{amsaddr}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[paperwidth=8.5in,paperheight=11in,text={6in,9in},left=1.25in,top=1in,headheight=0.25in,headsep=0.4in,footskip=0.4in]{geometry}
+\usepackage[authoryear]{natbib}
+\usepackage{subfigure}
+\usepackage{lineno}
+\bibpunct[, ]{(}{)}{,}{a}{}{,}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\E}{E}
+
+\synctex=1
+
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+  \renewenvironment{#1}%
+     {\linenomath\csname old#1\endcsname}%
+     {\csname oldend#1\endcsname\endlinenomath}}% 
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+  \patchAmsMathEnvironmentForLineno{#1}%
+  \patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+}
+
+%\usepackage{lmodern}
+%\usepackage{unicode-math}
+\usepackage{mathspec}
+\usepackage{xltxtra}
+\usepackage{xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont[Ligatures={Common}]{EB Garamond}
+%\setmathrm{EB Garamond}
+%\setmathfont(Digits,Latin)[Numbers={Lining,Proportional}]{EB Garamond}
+\setmainfont[Scale=1,Ligatures={Common}]{Adobe Caslon Pro}
+\setromanfont[Scale=1,Ligatures={Common}]{Adobe Caslon Pro}
+\setmathrm[Scale=1]{Adobe Caslon Pro}
+\setmathfont(Digits,Latin)[Numbers={Lining,Proportional}]{Adobe Caslon Pro}
+
+\definecolor{linenocolor}{gray}{0}
+\renewcommand\thelinenumber{\color{linenocolor}\arabic{linenumber}}
+
+\usepackage{fix-cm}
+
+\setcounter{totalnumber}{1}
+
+\newcommand{\mr}{\mathrm}
+%\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\makeatletter
+\newenvironment{startquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+\newcommand{\pp}{^{\,\prime}}
+
+%\renewcommand{\baselinestretch}{1.7}
+%\usepackage[nomarkers,figuresonly]{endfloat}
+
+
+\begin{document}
+
+\title{\large Social Learning and Rapid Environmental Change}
+\author[~]{Richard McElreath$^{1}$}
+\address{$^1$Max Planck Institute for Evolutionary Anthropology, Deutscher Platz 6, 04103 Leipzig, Germany}
+\email{richard\_mcelreath@eva.mpg.de}
+\date{\today}
+
+%{\abstract \small . }
+
+%\renewcommand*\rmdefault{Minion}
+
+
+
+\linenumbers
+\modulolinenumbers[5]
+
+\maketitle
+
+%{\vspace{-6pt}\footnotesize\begin{center}\today\end{center}\vspace{24pt}}
+
+%ABSTRACT
+%\begin{abstract}\normalsize
+%\end{abstract}
+
+
+\section{Goals}
+
+How do different social learning mechanisms interact with rapid environmental change? By ``rapid'' here I will mean change that results in new cultural stead states without catch-up by genetic adaptation. These new steady states in turn create rapid demographic responses that may result in extirpation. I reevaluate a few simple models of social learning to explore this question.
+
+First, I consider the perfectly unrealistic Rogers 1988 model, in which social and individual learning are entirely different strategies. What can be said about risks of rapid change?
+
+Second, I consider a more plastic social learning mechanism, one that deploys both innovation and imitation contingent upon cues. How does the addition of plasticity in learning strategy change conclusions about the impact of rapid change?
+
+Third, I consider again the plastic model, but now suppose that environmental change also changes the value of cues the organism uses in plastic response. 
+
+\section{REC-It Rogers}
+
+I use here the infinite-states environment model, not the binary state model of the original Rogers paper.
+
+\subsection{Pre-HIREC analysis}
+
+Let $p$ be the proportion of individuals with the social learning genotype. Let $b$ be the benefit of performing adaptive behavior for current environmental conditions. Let $c$ be the cost of innovation. Let $s$ be the chance of successful innovation, when attempted. Let $Q_t$ be the probability of acquiring adaptive behavior by social learning in generation $t$. Let $u$ be the probability the environment changes. Then the expected fitness of a social learner in generation $t$ is:
+\begin{align}
+	W_t(S) = w_0 + Q_t b
+\end{align}
+where $w_0$ is baseline fitness. $Q_t$ is defined by:
+\begin{align}
+	Q_t = (1-u)\big( (1-p)s + pQ_{t-1} ) + u(0)
+\end{align}
+The expected fitness of individual learning is time invariant and is given by:
+\begin{align*}
+	W(I) = w_0 + sb - c
+\end{align*}
+
+To find the genetic steady state prior to rapid environment change (REC), solve the two simultaneous equations:
+\begin{align*}
+	W_t(S) &= W(I) \\
+	Q_t &= Q_{t-1}
+\end{align*}
+for $\hat p = p$ and $\hat Q = Q_{t-1} = Q_t$. There is a unique solution:
+\begin{align}
+	\hat p &= \frac{1 - u s b/c}{1-u} & \hat Q &= s - \frac{c}{b}
+\end{align}
+
+Expected fitness of social learning is of course the same as individual learning, at steady state: $w_0 + s b - c$.
+
+\subsection{Post-HIREC analysis}
+
+REC may affect the ratio $B = b/c$, the rate $u$, or the rate $s$. Let the value of these quantities post-HIREC be $B^\prime = b^\prime / c^\prime$, $u^\prime$, and $s^\prime$. I suppose that genetic adaptation does not immediately respond to HIREC. And so $p = (1-usB)/(1-u)$ still. But behavior does respond and change the fitness of social (and individual) learners. The new expected probability of acquiring adaptive behavior by social learning is:
+\begin{align}
+	Q_t\pp = (1-u\pp) \big( (1-\hat p)s\pp + \hat p Q_{t-1}\pp \big)
+\end{align}
+Solving for the new behavioral steady state:
+\begin{align}
+	\hat Q\pp = \frac{u s\pp (1-u\pp)(sB-1) }{ (1-u) - (1-u\pp)(1-usB) } = \frac{u s\pp (sB-1)}{ \dfrac{1-u}{1-u\pp} -(1-usB) }
+\end{align}
+
+At this point, I realize that $\hat p$ not responding to REC only makes sense if $\hat p$ reflects mixed strategy instead of discrete social and individual learning genotypes. So relevant fitness post-REC is:
+\begin{align}
+	W(\hat p) = w_0 + (1-\hat p) ( s\pp b\pp - c\pp ) + \hat p \hat Q\pp b\pp
+\end{align}
+So the change in expected fitness post-REC is:
+\begin{align}
+	(1-\hat p) ( s\pp b\pp - c\pp ) + \hat p \hat Q\pp b\pp - (1-\hat p) ( s b - c ) - \hat p \hat Q b
+\end{align}
+which is greater than zero when:
+\begin{align*}
+	\frac{\hat p}{1-\hat p} \big( \hat Q\pp b\pp - \hat Q b \big ) > s b - c - ( s\pp b\pp - c\pp )
+\end{align*}
+In the case that $B = B\pp$, this reduces further to:
+\begin{align}
+	\frac{\hat p}{1-\hat p} \big( \hat Q\pp  - \hat Q  \big ) > s -  s\pp
+\end{align}
+where we know that the odds of social learning $\hat p / (1-\hat p) = (1/u - sB)/(sB-1)$.
+
+For convenience, let $\Delta Q = \hat Q\pp - \hat Q$ and $\Delta s = s\pp - s$. Of course the condition above is trivially satisfied when $\Delta Q > 0$ and $\Delta s > 0$---social learner does better and innovation works better. But suppose, as seems plausible, $\Delta s < 0$---innovation is harder after REC. Then fitness may increase after REC, provided $\Delta Q > 0$ and $\hat p$ is large enough. What is happening in such a case is that, post-REC, there is more innovation than selection would favor in the long run, because $\Delta s < 0$. As long as innovation is not too common, the gains from increased value of social information may exceed the costs of producing that information. Mutants who reduce reliance on innovation may invade, but during that process, the population may enjoy an increased growth rate.
+
+This scenario reflects the usual paradox in these simple producer-scrounger social learning models---social learning is social loafing. As a result, it is oversupplied relative to the amount that would maximize population growth. Equivalently, innovation provides a public good, and it ends up undersupplied.
+
+This kind of scenario appears to require that $u\pp < u$, so that the lower innovation rate can be compensated for by having longer average periods between shifts in the environment. Wonder if I can prove this?
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+%\bibliographystyle{plos2015} 
+%\bibliographystyle{apalike}
+%\bibliography{bibliography}
+
+
+
+\end{document}
